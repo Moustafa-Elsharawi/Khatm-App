@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Khatam Tracker</title>
+
+  <!-- iOS Web App / PWA Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Khatam" />
+  <meta name="theme-color" content="#09090b" id="meta-theme-color" />
+
+  <!-- Dynamic Apple Touch Icon & Web Manifest via JS below -->
+  <link rel="apple-touch-icon" id="apple-touch-icon" href="" />
+  <link rel="manifest" id="pwa-manifest" href="" />
+
+  <!-- Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+          },
+          colors: {
+            emerald: {
+              450: '#10b981',
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* Smooth scrolling and iOS safe area support */
+    html, body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      overscroll-behavior-y: none;
+    }
+
+    body {
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: calc(env(safe-area-inset-bottom) + 2rem);
+    }
+
+    /* Hide number input spinners for clean mobile keyboard entry */
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+
+    /* Custom subtle scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(156, 163, 175, 0.3);
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100 transition-colors duration-200 min-h-screen selection:bg-emerald-500/20">
+
+  <!-- Main App Container -->
+  <div class="max-w-lg mx-auto px-4 pt-4 pb-10 space-y-4">
+
+    <!-- 1. Top Header & Progress Bar -->
+    <header class="space-y-3">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-emerald-600/15 dark:bg-emerald-500/15 border border-emerald-600/25 dark:border-emerald-500/25 flex items-center justify-center text-emerald-700 dark:text-emerald-400">
+            <!-- Minimalist Book / Crescent Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+            </svg>
+          </div>
+          <div>
+            <h1 id="header-title" class="text-lg font-bold tracking-tight leading-tight">Khatam Tracker</h1>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 font-medium" id="active-khatm-label">Khatm #1 in progress</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <!-- Home Button (shown when inside Settings view) -->
+          <button
+            id="btn-go-home"
+            type="button"
+            aria-label="Back to Home"
+            class="hidden min-h-[44px] px-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm active:scale-95 transition"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+            <span>Home</span>
+          </button>
+
+          <!-- Settings Page Toggle Button (shown on Home view) -->
+          <button
+            id="btn-open-settings"
+            type="button"
+            aria-label="Open Settings"
+            class="w-11 h-11 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 active:scale-95 transition"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ===================================================================== -->
+    <!-- HOME VIEW (Hidden when Settings View is open)                         -->
+    <!-- ===================================================================== -->
+    <main id="home-view" class="space-y-4">
+
+      <!-- Top Percentage Progress Card -->
+      <div class="bg-white dark:bg-zinc-900/90 border border-zinc-200/80 dark:border-zinc-800 rounded-2xl p-4 shadow-sm">
+        <div class="flex items-baseline justify-between mb-2">
+          <div class="flex items-baseline gap-2">
+            <span id="progress-percent" class="text-3xl font-extrabold tracking-tight text-emerald-600 dark:text-emerald-400">0.0%</span>
+            <span class="text-xs font-medium text-zinc-500 dark:text-zinc-400">completed</span>
+          </div>
+          <div class="text-xs font-semibold text-zinc-600 dark:text-zinc-300 tabular-nums">
+            Page <span id="progress-pages-text">0</span> / 604
+          </div>
+        </div>
+
+        <!-- Progress Track -->
+        <div class="w-full h-3.5 bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden p-0.5">
+          <div
+            id="progress-bar-fill"
+            class="h-full bg-gradient-to-r from-emerald-600 to-emerald-400 rounded-full transition-all duration-300 ease-out"
+            style="width: 0%"
+          ></div>
+        </div>
+
+        <div class="flex items-center justify-between mt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
+          <span id="juz-estimate">Juz 1</span>
+          <span id="pages-remaining-text">604 pages left</span>
+        </div>
+      </div>
+
+      <!-- 2. Easy Page Logging Card -->
+      <section class="bg-white dark:bg-zinc-900/90 border border-zinc-200/80 dark:border-zinc-800 rounded-2xl p-4 shadow-sm space-y-3.5">
+        <div class="flex items-center justify-between">
+          <label for="input-current-page" class="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+            Current Page Completed
+          </label>
+          <span class="text-[11px] text-zinc-400 dark:text-zinc-500">Tap number to edit</span>
+        </div>
+
+        <div class="flex items-center gap-2.5">
+          <!-- Subtle -1 Page Undo Button -->
+          <button
+            id="btn-minus-one"
+            type="button"
+            aria-label="Subtract 1 page"
+            class="w-12 h-14 rounded-xl bg-zinc-100 dark:bg-zinc-800/90 border border-zinc-200/80 dark:border-zinc-700/80 text-zinc-700 dark:text-zinc-300 font-bold text-lg flex items-center justify-center hover:bg-zinc-200 dark:hover:bg-zinc-700 active:scale-95 transition select-none"
+          >
+            -1
+          </button>
+
+          <!-- Direct Numeric Page Input -->
+          <div class="relative flex-1">
+            <input
+              id="input-current-page"
+              type="number"
+              inputmode="numeric"
+              min="0"
+              max="604"
+              value="0"
+              aria-label="Pages completed so far"
+              class="w-full h-14 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-center text-2xl font-extrabold tabular-nums text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition"
+            />
+          </div>
+
+          <!-- Primary +1 Page Button -->
+          <button
+            id="btn-plus-one"
+            type="button"
+            class="h-14 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white font-bold text-base shadow-sm shadow-emerald-600/20 flex items-center justify-center gap-1.5 active:scale-95 transition select-none"
+          >
+            <span>+1 Page</span>
+          </button>
+        </div>
+
+        <!-- Complete Khatm Banner / Action (highlighted when at 604) -->
+        <div id="complete-khatm-box" class="hidden pt-1">
+          <button
+            id="btn-complete-khatm"
+            type="button"
+            class="w-full min-h-[48px] rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-bold text-sm shadow-md shadow-emerald-600/25 flex items-center justify-center gap-2 active:scale-[0.99] transition animate-pulse"
+          >
+            <span>Complete Khatm &amp; Log Today</span>
+            <span aria-hidden="true">🎉</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- 3. Ramadan & Eid Countdown + Dynamic Pacing Engine -->
+      <section id="ramadan-card" class="bg-white dark:bg-zinc-900/90 border border-zinc-200/80 dark:border-zinc-800 rounded-2xl p-4 shadow-sm">
+        <!-- Content injected dynamically by updateRamadanCard() -->
+      </section>
+
+      <!-- 4. Khatm Stats Tiles (3 Columns) -->
+      <section class="grid grid-cols-3 gap-2.5">
+        <!-- Tile 1: Days Since Last Khatm -->
+        <div class="bg-white dark:bg-zinc-900/90 border border-zinc-200/80 dark:border-zinc-800 rounded-2xl p-3.5 text-center shadow-sm flex flex-col justify-between">
+          <span id="stat-days-since" class="text-2xl font-extrabold tabular-nums text-zinc-900 dark:text-zinc-100">—</span>
+          <span class="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 leading-tight mt-1">Days Since Last Khatm</span>
+        </div>
+
+        <!-- Tile 2: Completed in Current Year -->
+        <div class="bg-white dark:bg-zinc-900/90 border border-zinc-200/80 dark:border-zinc-800 rounded-2xl p-3.5 text-center shadow-sm flex flex-col justify-between">
+          <span id="stat-year-count" class="text-2xl font-extrabold tabular-nums text-emerald-600 dark:text-emerald-400">0</span>
+          <span id="stat-year-label" class="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 leading-tight mt-1">2026 Khatms</span>
+        </div>
+
+        <!-- Tile 3: Total Khatms -->
+        <div class="bg-white dark:bg-zinc-900/90 border border-zinc-200/80 dark:border-zinc-800 rounded-2xl p-3.5 text-center shadow-sm flex flex-col justify-between">
+          <span id="stat-total-count" class="text-2xl font-extrabold tabular-nums text-zinc-900 dark:text-zinc-100">0</span>
+          <span class="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 leading-tight mt-1">Total Khatms</span>
+        </div>
+      </section>
+
+      <!-- 5. Khatm History & Retroactive Entry -->
+      <section class="bg-white dark:bg-zinc-900/90 border border-zinc-200/80 dark:border-zinc-800 rounded-2xl p-4 shadow-sm space-y-3">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-sm font-bold tracking-tight">Completed Khatm Log</h2>
+            <p class="text-[11px] text-zinc-500 dark:text-zinc-400">Chronological record across all years</p>
+          </div>
+          <button
+            id="btn-open-retro-modal"
+            type="button"
+            class="min-h-[38px] px-3 rounded-xl bg-emerald-600/10 dark:bg-emerald-500/15 hover:bg-emerald-600/20 dark:hover:bg-emerald-500/25 text-emerald-700 dark:text-emerald-300 border border-emerald-600/20 dark:border-emerald-500/25 text-xs font-semibold flex items-center gap-1 active:scale-95 transition"
+          >
+            <span>+ Add Past Khatm</span>
+          </button>
+        </div>
+
+        <!-- History List Container -->
+        <div id="khatm-history-list" class="divide-y divide-zinc-100 dark:divide-zinc-800/80">
+          <!-- Populated dynamically -->
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ===================================================================== -->
+    <!-- DEDICATED SETTINGS VIEW (Replaces Home View when active)              -->
+    <!-- ===================================================================== -->
+    <section id="settings-view" class="hidden space-y-4">
+
+      <!-- Appearance (Light / Dark Mode) -->
+      <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-4 shadow-sm space-y-3">
+        <div>
+          <h2 class="text-sm font-bold">Appearance</h2>
+          <p class="text-[11px] text-zinc-500 dark:text-zinc-400">Choose your preferred reading theme</p>
+        </div>
+        <div class="grid grid-cols-2 gap-2.5">
+          <button
+            type="button"
+            data-theme-choice="light"
+            class="theme-choice-btn min-h-[46px] rounded-xl text-xs font-bold border border-zinc-200 dark:border-zinc-700 flex items-center justify-center gap-2 transition"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
+            </svg>
+            <span>Light Mode</span>
+          </button>
+
+          <button
+            type="button"
+            data-theme-choice="dark"
+            class="theme-choice-btn min-h-[46px] rounded-xl text-xs font-bold border border-zinc-200 dark:border-zinc-700 flex items-center justify-center gap-2 transition"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+            </svg>
+            <span>Dark Mode</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Moon Sighting Offset -->
+      <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-4 shadow-sm space-y-3">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-sm font-bold">Ramadan &amp; Eid Dates</h2>
+            <p class="text-[11px] text-zinc-500 dark:text-zinc-400">North America local moon-sighting adjustment</p>
+          </div>
+          <span id="offset-badge" class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">Default (0d)</span>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2">
+          <button type="button" data-offset="-1" class="offset-btn min-h-[42px] rounded-xl text-xs font-semibold border border-zinc-200 dark:border-zinc-700 transition">-1 Day</button>
+          <button type="button" data-offset="0" class="offset-btn min-h-[42px] rounded-xl text-xs font-semibold border border-zinc-200 dark:border-zinc-700 transition">0 Days</button>
+          <button type="button" data-offset="1" class="offset-btn min-h-[42px] rounded-xl text-xs font-semibold border border-zinc-200 dark:border-zinc-700 transition">+1 Day</button>
+        </div>
+        <p class="text-[11px] text-zinc-400">Use this if your local masjid announces Ramadan or Eid one day earlier or later.</p>
+      </div>
+
+      <!-- Reset Current Khatm Progress -->
+      <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-4 shadow-sm space-y-3">
+        <div>
+          <h2 class="text-sm font-bold">Reset Current Khatm</h2>
+          <p class="text-[11px] text-zinc-500 dark:text-zinc-400">Set active reading back to Page 0 without deleting past completed Khatms</p>
+        </div>
+
+        <button
+          id="btn-reset-progress"
+          type="button"
+          class="w-full min-h-[44px] rounded-xl text-xs font-semibold bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 border border-rose-500/25 transition"
+        >
+          Reset Current Khatm to Page 0
+        </button>
+
+        <!-- Inline Two-Step Confirmation (No browser confirm() used) -->
+        <div id="reset-confirm-box" class="hidden rounded-xl bg-rose-500/10 border border-rose-500/25 p-3 space-y-2.5">
+          <p class="text-xs font-medium text-rose-700 dark:text-rose-300">
+            Reset your current progress (<span id="reset-current-pages-label">0</span>/604) back to Page 0? Your completed Khatm log will stay safe.
+          </p>
+          <div class="grid grid-cols-2 gap-2">
+            <button
+              id="btn-cancel-reset"
+              type="button"
+              class="min-h-[40px] rounded-lg bg-white dark:bg-zinc-800 text-xs font-semibold text-zinc-700 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700 transition"
+            >
+              Cancel
+            </button>
+            <button
+              id="btn-confirm-reset"
+              type="button"
+              class="min-h-[40px] rounded-lg bg-rose-600 hover:bg-rose-500 text-xs font-bold text-white transition"
+            >
+              Yes, Reset to 0
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Prominent Return Home Button at Bottom of Settings -->
+      <button
+        id="btn-bottom-home"
+        type="button"
+        class="w-full min-h-[48px] rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold shadow-sm flex items-center justify-center gap-2 active:scale-[0.99] transition"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+        <span>Back to Home</span>
+      </button>
+
+    </section>
+
+  </div>
+
+  <!-- Modal: Add / Edit Retroactive Khatm -->
+  <div id="retro-modal" class="fixed inset-0 z-50 hidden items-end sm:items-center justify-center bg-black/60 backdrop-blur-xs p-4">
+    <div class="w-full max-w-md bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 id="retro-modal-title" class="text-base font-bold">Log Past Khatm</h3>
+        <button id="btn-close-retro-modal" type="button" class="w-8 h-8 rounded-lg flex items-center justify-center text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200">
+          ✕
+        </button>
+      </div>
+
+      <form id="retro-form" class="space-y-4">
+        <input type="hidden" id="retro-edit-id" value="" />
+
+        <div class="space-y-1.5">
+          <label for="retro-date-input" class="block text-xs font-semibold text-zinc-600 dark:text-zinc-300">
+            Completion Date (Any Past Year or Date)
+          </label>
+          <input
+            id="retro-date-input"
+            type="date"
+            required
+            class="w-full h-12 px-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-sm font-medium text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          />
+        </div>
+
+        <div id="retro-quantity-group" class="space-y-1.5">
+          <label for="retro-qty-input" class="block text-xs font-semibold text-zinc-600 dark:text-zinc-300">
+            Number of Khatms on this Date
+          </label>
+          <input
+            id="retro-qty-input"
+            type="number"
+            min="1"
+            max="50"
+            value="1"
+            class="w-full h-12 px-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-sm font-medium text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          />
+          <p class="text-[11px] text-zinc-400">Useful if you want to quickly log multiple past Khatms from previous years.</p>
+        </div>
+
+        <div class="flex items-center gap-2.5 pt-2">
+          <button
+            type="button"
+            id="btn-cancel-retro"
+            class="flex-1 min-h-[44px] rounded-xl bg-zinc-100 dark:bg-zinc-800 text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            class="flex-1 min-h-[44px] rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-sm transition"
+          >
+            Save Khatm
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Non-intrusive Toast Notification -->
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 transition-opacity duration-200">
+    <div id="toast-message" class="px-4 py-2.5 rounded-full bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-xs font-semibold shadow-lg whitespace-nowrap">
+      Saved
+    </div>
+  </div>
+
+  <script>
+    /**
+     * ============================================================================
+     * 1. iOS PWA MANIFEST & APPLE TOUCH ICON GENERATOR
+     * ============================================================================
+     */
+    (function setupPWA() {
+      try {
+        const svgIcon = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+            <defs>
+              <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#065f46"/>
+                <stop offset="100%" stop-color="#09090b"/>
+              </linearGradient>
+            </defs>
+            <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+            <g transform="translate(116, 126) scale(11.6)" fill="none" stroke="#34d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+            </g>
+          </svg>
+        `.trim();
+
+        const svgDataUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgIcon);
+        const touchIconEl = document.getElementById('apple-touch-icon');
+        if (touchIconEl) touchIconEl.setAttribute('href', svgDataUrl);
+
+        const manifest = {
+          name: 'Quran Khatam Tracker',
+          short_name: 'Khatam',
+          start_url: '.',
+          display: 'standalone',
+          background_color: '#09090b',
+          theme_color: '#09090b',
+          icons: [
+            {
+              src: svgDataUrl,
+              sizes: '512x512',
+              type: 'image/svg+xml',
+              purpose: 'any maskable'
+            }
+          ]
+        };
+
+        const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' });
+        const manifestUrl = URL.createObjectURL(manifestBlob);
+        const manifestEl = document.getElementById('pwa-manifest');
+        if (manifestEl) manifestEl.setAttribute('href', manifestUrl);
+      } catch (err) {
+        console.warn('PWA setup fallback:', err);
+      }
+    })();
+
+    /**
+     * ============================================================================
+     * 2. STATE MANAGEMENT & LOCAL STORAGE PERSISTENCE
+     * ============================================================================
+     */
+    const TOTAL_PAGES = 604;
+    const STORAGE_KEY = 'khatam_tracker_state_v1';
+
+    let state = {
+      completedPages: 0,
+      khatmHistory: [], // Array of { id: string, date: 'YYYY-MM-DD' }
+      ramadanOffsetDays: 0, // -1, 0, or +1 day offset for local moon sighting
+      theme: 'dark' // 'dark' | 'light'
+    };
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        if (typeof parsed.completedPages === 'number') {
+          state.completedPages = Math.max(0, Math.min(TOTAL_PAGES, Math.floor(parsed.completedPages)));
+        }
+        if (Array.isArray(parsed.khatmHistory)) {
+          state.khatmHistory = parsed.khatmHistory.filter(
+            item => item && typeof item.date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(item.date)
+          );
+        }
+        if ([-1, 0, 1].includes(parsed.ramadanOffsetDays)) {
+          state.ramadanOffsetDays = parsed.ramadanOffsetDays;
+        }
+        if (parsed.theme === 'light' || parsed.theme === 'dark') {
+          state.theme = parsed.theme;
+        }
+      } catch (err) {
+        console.error('Failed to load state:', err);
+      }
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (err) {
+        console.error('Failed to save state:', err);
+      }
+    }
+
+    /**
+     * ============================================================================
+     * 3. DATE & NORTH AMERICA RAMADAN / EID ENGINE (FCNA / ISNA)
+     * ============================================================================
+     */
+    const FCNA_RAMADAN_DATES = [
+      { hijriYear: 1447, ramadanStart: '2026-02-18', eidDate: '2026-03-20' },
+      { hijriYear: 1448, ramadanStart: '2027-02-08', eidDate: '2027-03-09' },
+      { hijriYear: 1449, ramadanStart: '2028-01-28', eidDate: '2028-02-26' },
+      { hijriYear: 1450, ramadanStart: '2029-01-16', eidDate: '2029-02-14' },
+      { hijriYear: 1451, ramadanStart: '2030-01-05', eidDate: '2030-02-04' },
+      { hijriYear: 1452, ramadanStart: '2030-12-26', eidDate: '2031-01-24' },
+      { hijriYear: 1453, ramadanStart: '2031-12-15', eidDate: '2032-01-14' },
+      { hijriYear: 1454, ramadanStart: '2032-12-03', eidDate: '2033-01-02' },
+      { hijriYear: 1455, ramadanStart: '2033-11-23', eidDate: '2033-12-22' }
+    ];
+
+    function getTodayMidnight() {
+      const now = new Date();
+      return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    }
+
+    function parseLocalDate(ymd) {
+      const [y, m, d] = ymd.split('-').map(Number);
+      return new Date(y, m - 1, d);
+    }
+
+    function formatYMD(date) {
+      const y = date.getFullYear();
+      const m = String(date.getMonth() + 1).padStart(2, '0');
+      const d = String(date.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    function formatDisplayDate(ymd) {
+      const d = parseLocalDate(ymd);
+      return d.toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
+      });
+    }
+
+    function addDays(date, days) {
+      const copy = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+      copy.setDate(copy.getDate() + days);
+      return copy;
+    }
+
+    function diffInCalendarDays(startDate, endDate) {
+      const msPerDay = 24 * 60 * 60 * 1000;
+      const utcStart = Date.UTC(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+      const utcEnd = Date.UTC(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
+      return Math.round((utcEnd - utcStart) / msPerDay);
+    }
+
+    function getRamadanStatus(today) {
+      const windows = FCNA_RAMADAN_DATES.map(entry => ({
+        ramadanStart: addDays(parseLocalDate(entry.ramadanStart), state.ramadanOffsetDays),
+        eidDate: addDays(parseLocalDate(entry.eidDate), state.ramadanOffsetDays)
+      }));
+
+      // Fallback projection if beyond table
+      const lastEntry = windows[windows.length - 1];
+      if (today > lastEntry.eidDate) {
+        let projStart = addDays(lastEntry.ramadanStart, 354);
+        let projEid = addDays(lastEntry.eidDate, 354);
+        while (today > projEid) {
+          projStart = addDays(projStart, 354);
+          projEid = addDays(projEid, 354);
+        }
+        windows.push({ ramadanStart: projStart, eidDate: projEid });
+      }
+
+      for (const win of windows) {
+        if (today >= win.ramadanStart && today < win.eidDate) {
+          const daysLeftUntilEid = Math.max(1, diffInCalendarDays(today, win.eidDate));
+          const ramadanDayNumber = diffInCalendarDays(win.ramadanStart, today) + 1;
+          return {
+            inRamadan: true,
+            ramadanStart: win.ramadanStart,
+            eidDate: win.eidDate,
+            daysLeftUntilEid,
+            ramadanDayNumber
+          };
+        }
+        if (today < win.ramadanStart) {
+          const daysUntilRamadan = diffInCalendarDays(today, win.ramadanStart);
+          return {
+            inRamadan: false,
+            ramadanStart: win.ramadanStart,
+            eidDate: win.eidDate,
+            daysUntilRamadan
+          };
+        }
+      }
+
+      return {
+        inRamadan: false,
+        ramadanStart: windows[0].ramadanStart,
+        eidDate: windows[0].eidDate,
+        daysUntilRamadan: 0
+      };
+    }
+
+    /**
+     * ============================================================================
+     * 4. UI RENDERING & VIEW SWITCHING
+     * ============================================================================
+     */
+    let toastTimer = null;
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const msgEl = document.getElementById('toast-message');
+      if (!toast || !msgEl) return;
+      msgEl.textContent = message;
+      toast.classList.remove('opacity-0');
+      toast.classList.add('opacity-100');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove('opacity-100');
+        toast.classList.add('opacity-0');
+      }, 2200);
+    }
+
+    function applyTheme() {
+      const htmlEl = document.documentElement;
+      const metaTheme = document.getElementById('meta-theme-color');
+      if (state.theme === 'dark') {
+        htmlEl.classList.add('dark');
+        if (metaTheme) metaTheme.setAttribute('content', '#09090b');
+      } else {
+        htmlEl.classList.remove('dark');
+        if (metaTheme) metaTheme.setAttribute('content', '#fafafa');
+      }
+    }
+
+    function updateProgressUI() {
+      const pages = state.completedPages;
+      const pct = ((pages / TOTAL_PAGES) * 100).toFixed(1);
+      const remaining = Math.max(0, TOTAL_PAGES - pages);
+      const currentKhatmNum = state.khatmHistory.length + 1;
+      const estimatedJuz = pages === 0 ? 1 : Math.min(30, Math.ceil((pages / TOTAL_PAGES) * 30));
+
+      document.getElementById('progress-percent').textContent = `${pct}%`;
+      document.getElementById('progress-pages-text').textContent = pages;
+      document.getElementById('progress-bar-fill').style.width = `${Math.min(100, (pages / TOTAL_PAGES) * 100)}%`;
+      document.getElementById('juz-estimate').textContent = pages === TOTAL_PAGES ? 'Juz 30 • Complete!' : `Approx. Juz ${estimatedJuz} of 30`;
+      document.getElementById('pages-remaining-text').textContent = `${remaining} ${remaining === 1 ? 'page' : 'pages'} left`;
+
+      const isSettingsOpen = !document.getElementById('settings-view').classList.contains('hidden');
+      if (!isSettingsOpen) {
+        document.getElementById('active-khatm-label').textContent = `Khatm #${currentKhatmNum} in progress`;
+      }
+
+      const inputEl = document.getElementById('input-current-page');
+      if (document.activeElement !== inputEl) {
+        inputEl.value = pages;
+      }
+
+      const completeBox = document.getElementById('complete-khatm-box');
+      if (pages >= TOTAL_PAGES) {
+        completeBox.classList.remove('hidden');
+      } else {
+        completeBox.classList.add('hidden');
+      }
+    }
+
+    function updateRamadanCard() {
+      const card = document.getElementById('ramadan-card');
+      const today = getTodayMidnight();
+      const status = getRamadanStatus(today);
+
+      if (status.inRamadan) {
+        const remainingPages = Math.max(0, TOTAL_PAGES - state.completedPages);
+        const rawRate = remainingPages / status.daysLeftUntilEid;
+        const ceilRate = Math.ceil(rawRate);
+        const exactRate = rawRate.toFixed(1);
+        const eidFormatted = formatDisplayDate(formatYMD(status.eidDate));
+
+        card.innerHTML = `
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
+                  Ramadan Day ${status.ramadanDayNumber}
+                </span>
+                <span class="text-xs font-medium text-zinc-500 dark:text-zinc-400">North America</span>
+              </div>
+              <span class="text-[11px] text-zinc-400">Eid: ${eidFormatted}</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 pt-0.5">
+              <div class="rounded-xl bg-zinc-50 dark:bg-zinc-950/70 border border-zinc-200/70 dark:border-zinc-800/80 p-3">
+                <div class="text-2xl font-extrabold tabular-nums text-zinc-900 dark:text-zinc-100">
+                  ${status.daysLeftUntilEid}
+                </div>
+                <div class="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 mt-0.5">
+                  ${status.daysLeftUntilEid === 1 ? 'Day Left Until Eid' : 'Days Left Until Eid'}
+                </div>
+              </div>
+
+              <div class="rounded-xl bg-emerald-600/10 dark:bg-emerald-500/10 border border-emerald-600/20 dark:border-emerald-500/20 p-3">
+                <div class="text-2xl font-extrabold tabular-nums text-emerald-700 dark:text-emerald-400">
+                  ${remainingPages === 0 ? '0' : ceilRate} <span class="text-xs font-bold">pg/day</span>
+                </div>
+                <div class="text-[11px] font-medium text-emerald-800/80 dark:text-emerald-300/80 mt-0.5">
+                  ${remainingPages === 0 ? 'Khatm Ready!' : `(${exactRate}/day) to finish by Eid`}
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      } else {
+        const startFormatted = formatDisplayDate(formatYMD(status.ramadanStart));
+        card.innerHTML = `
+          <div class="flex items-center justify-between gap-3">
+            <div class="space-y-1">
+              <div class="flex items-center gap-1.5">
+                <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Next Ramadan</span>
+                <span class="text-[11px] text-zinc-400">• North America</span>
+              </div>
+              <p class="text-sm font-bold text-zinc-900 dark:text-zinc-100">Starts ${startFormatted}</p>
+              <p class="text-[11px] text-zinc-500 dark:text-zinc-400">Daily Eid pace activates automatically in Ramadan</p>
+            </div>
+
+            <div class="shrink-0 text-right bg-zinc-50 dark:bg-zinc-950/70 border border-zinc-200/80 dark:border-zinc-800 rounded-xl px-3.5 py-2.5">
+              <div class="text-2xl font-extrabold tabular-nums text-emerald-600 dark:text-emerald-400">
+                ${status.daysUntilRamadan}
+              </div>
+              <div class="text-[10px] font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
+                ${status.daysUntilRamadan === 1 ? 'Day Away' : 'Days Away'}
+              </div>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function updateStatsAndHistoryUI() {
+      const today = getTodayMidnight();
+      const currentYear = today.getFullYear();
+
+      // Sort history chronologically (oldest to newest) to assign Khatm #1, #2, etc.
+      const sortedChronological = [...state.khatmHistory].sort((a, b) => a.date.localeCompare(b.date));
+      const numberedHistory = sortedChronological.map((item, idx) => ({
+        ...item,
+        number: idx + 1
+      }));
+
+      // Total Khatms
+      const totalCount = numberedHistory.length;
+      document.getElementById('stat-total-count').textContent = totalCount;
+
+      // Completed in current calendar year
+      const yearCount = numberedHistory.filter(item => Number(item.date.slice(0, 4)) === currentYear).length;
+      document.getElementById('stat-year-count').textContent = yearCount;
+      document.getElementById('stat-year-label').textContent = `${currentYear} Khatms`;
+
+      // Days since last Khatm
+      const daysSinceEl = document.getElementById('stat-days-since');
+      if (numberedHistory.length === 0) {
+        daysSinceEl.textContent = '—';
+      } else {
+        const latestItem = numberedHistory[numberedHistory.length - 1];
+        const latestDate = parseLocalDate(latestItem.date);
+        const diffDays = Math.max(0, diffInCalendarDays(latestDate, today));
+        daysSinceEl.textContent = diffDays;
+      }
+
+      // Render history list (newest first)
+      const listEl = document.getElementById('khatm-history-list');
+      if (numberedHistory.length === 0) {
+        listEl.innerHTML = `
+          <div class="py-6 text-center space-y-1">
+            <p class="text-xs font-medium text-zinc-500 dark:text-zinc-400">No completed Khatms logged yet.</p>
+            <p class="text-[11px] text-zinc-400 dark:text-zinc-500">Tap "+ Add Past Khatm" to record previous completions.</p>
+          </div>
+        `;
+        return;
+      }
+
+      const newestFirst = [...numberedHistory].reverse();
+      listEl.innerHTML = newestFirst.map(item => `
+        <div class="py-2.5 flex items-center justify-between gap-2">
+          <div class="flex items-center gap-3">
+            <span class="w-8 h-8 rounded-lg bg-emerald-600/10 dark:bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 text-xs font-bold flex items-center justify-center tabular-nums">
+              #${item.number}
+            </span>
+            <div>
+              <p class="text-xs font-bold text-zinc-900 dark:text-zinc-100">Khatm #${item.number}</p>
+              <p class="text-[11px] text-zinc-500 dark:text-zinc-400">${formatDisplayDate(item.date)}</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-1">
+            <button
+              type="button"
+              onclick="openEditRetroModal('${item.id}')"
+              aria-label="Edit date"
+              class="px-2.5 py-1.5 rounded-lg text-[11px] font-medium text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
+            >
+              Edit
+            </button>
+            <button
+              type="button"
+              onclick="deleteKhatmEntry('${item.id}')"
+              aria-label="Delete entry"
+              class="px-2 py-1.5 rounded-lg text-[11px] font-medium text-rose-500 hover:bg-rose-500/10 transition"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function updateSettingsUI() {
+      // Theme buttons
+      document.querySelectorAll('.theme-choice-btn').forEach(btn => {
+        const choice = btn.getAttribute('data-theme-choice');
+        if (choice === state.theme) {
+          btn.classList.add('bg-emerald-600', 'text-white', 'border-emerald-600');
+        } else {
+          btn.classList.remove('bg-emerald-600', 'text-white', 'border-emerald-600');
+        }
+      });
+
+      // Moon offset buttons
+      document.querySelectorAll('.offset-btn').forEach(btn => {
+        const val = Number(btn.getAttribute('data-offset'));
+        if (val === state.ramadanOffsetDays) {
+          btn.classList.add('bg-emerald-600', 'text-white', 'border-emerald-600');
+        } else {
+          btn.classList.remove('bg-emerald-600', 'text-white', 'border-emerald-600');
+        }
+      });
+
+      const badge = document.getElementById('offset-badge');
+      if (badge) {
+        if (state.ramadanOffsetDays === 0) badge.textContent = 'Default (0d)';
+        else if (state.ramadanOffsetDays > 0) badge.textContent = `Adjusted (+${state.ramadanOffsetDays}d)`;
+        else badge.textContent = `Adjusted (${state.ramadanOffsetDays}d)`;
+      }
+
+      // Reset current progress label & hide confirmation box initially
+      const resetLabel = document.getElementById('reset-current-pages-label');
+      if (resetLabel) resetLabel.textContent = state.completedPages;
+      const confirmBox = document.getElementById('reset-confirm-box');
+      if (confirmBox) confirmBox.classList.add('hidden');
+    }
+
+    function showHomeView() {
+      document.getElementById('home-view').classList.remove('hidden');
+      document.getElementById('settings-view').classList.add('hidden');
+      document.getElementById('btn-open-settings').classList.remove('hidden');
+      document.getElementById('btn-go-home').classList.add('hidden');
+      document.getElementById('header-title').textContent = 'Khatam Tracker';
+      updateProgressUI();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showSettingsView() {
+      document.getElementById('home-view').classList.add('hidden');
+      document.getElementById('settings-view').classList.remove('hidden');
+      document.getElementById('btn-open-settings').classList.add('hidden');
+      document.getElementById('btn-go-home').classList.remove('hidden');
+      document.getElementById('header-title').textContent = 'Settings';
+      document.getElementById('active-khatm-label').textContent = 'Preferences & Reset';
+      updateSettingsUI();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderAll() {
+      applyTheme();
+      updateProgressUI();
+      updateRamadanCard();
+      updateStatsAndHistoryUI();
+      updateSettingsUI();
+    }
+
+    /**
+     * ============================================================================
+     * 5. ACTIONS & EVENT HANDLERS
+     * ============================================================================
+     */
+    function setCompletedPages(newPages) {
+      const clamped = Math.max(0, Math.min(TOTAL_PAGES, Math.floor(Number(newPages) || 0)));
+      state.completedPages = clamped;
+      saveState();
+      updateProgressUI();
+      updateRamadanCard();
+    }
+
+    function completeCurrentKhatm() {
+      const todayYMD = formatYMD(getTodayMidnight());
+      state.khatmHistory.push({
+        id: 'k_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+        date: todayYMD
+      });
+      state.completedPages = 0;
+      saveState();
+      renderAll();
+      showToast('MashaAllah! Khatm logged & new Khatm started.');
+    }
+
+    function openAddRetroModal() {
+      document.getElementById('retro-modal-title').textContent = 'Log Past Khatm';
+      document.getElementById('retro-edit-id').value = '';
+      document.getElementById('retro-date-input').value = formatYMD(getTodayMidnight());
+      document.getElementById('retro-qty-input').value = '1';
+      document.getElementById('retro-quantity-group').classList.remove('hidden');
+
+      const modal = document.getElementById('retro-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    window.openEditRetroModal = function(id) {
+      const entry = state.khatmHistory.find(item => item.id === id);
+      if (!entry) return;
+
+      document.getElementById('retro-modal-title').textContent = 'Edit Completion Date';
+      document.getElementById('retro-edit-id').value = entry.id;
+      document.getElementById('retro-date-input').value = entry.date;
+      document.getElementById('retro-quantity-group').classList.add('hidden');
+
+      const modal = document.getElementById('retro-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    };
+
+    window.deleteKhatmEntry = function(id) {
+      state.khatmHistory = state.khatmHistory.filter(item => item.id !== id);
+      saveState();
+      renderAll();
+      showToast('Entry removed');
+    };
+
+    function closeRetroModal() {
+      const modal = document.getElementById('retro-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadState();
+      renderAll();
+
+      // View navigation: Home <-> Settings
+      document.getElementById('btn-open-settings').addEventListener('click', showSettingsView);
+      document.getElementById('btn-go-home').addEventListener('click', showHomeView);
+      document.getElementById('btn-bottom-home').addEventListener('click', showHomeView);
+
+      // Theme choice buttons inside Settings
+      document.querySelectorAll('.theme-choice-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.theme = btn.getAttribute('data-theme-choice') === 'light' ? 'light' : 'dark';
+          saveState();
+          applyTheme();
+          updateSettingsUI();
+        });
+      });
+
+      // Moon-sighting offset buttons
+      document.querySelectorAll('.offset-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.ramadanOffsetDays = Number(btn.getAttribute('data-offset'));
+          saveState();
+          updateSettingsUI();
+          updateRamadanCard();
+          showToast('Calendar offset updated');
+        });
+      });
+
+      // Reset current Khatm progress (two-step inline confirmation)
+      document.getElementById('btn-reset-progress').addEventListener('click', () => {
+        if (state.completedPages === 0) {
+          showToast('Already at Page 0');
+          return;
+        }
+        document.getElementById('reset-current-pages-label').textContent = state.completedPages;
+        document.getElementById('reset-confirm-box').classList.remove('hidden');
+      });
+
+      document.getElementById('btn-cancel-reset').addEventListener('click', () => {
+        document.getElementById('reset-confirm-box').classList.add('hidden');
+      });
+
+      document.getElementById('btn-confirm-reset').addEventListener('click', () => {
+        state.completedPages = 0;
+        saveState();
+        updateSettingsUI();
+        updateProgressUI();
+        updateRamadanCard();
+        showToast('Current Khatm reset to Page 0');
+      });
+
+      // +1 Page & -1 Page buttons
+      document.getElementById('btn-plus-one').addEventListener('click', () => {
+        if (state.completedPages < TOTAL_PAGES) {
+          setCompletedPages(state.completedPages + 1);
+        } else {
+          showToast('Reached page 604! Tap Complete Khatm below.');
+        }
+      });
+
+      document.getElementById('btn-minus-one').addEventListener('click', () => {
+        if (state.completedPages > 0) {
+          setCompletedPages(state.completedPages - 1);
+        }
+      });
+
+      // Direct numeric page input
+      const pageInput = document.getElementById('input-current-page');
+      pageInput.addEventListener('input', (e) => {
+        const raw = e.target.value;
+        if (raw === '') return;
+        const val = Math.max(0, Math.min(TOTAL_PAGES, parseInt(raw, 10) || 0));
+        state.completedPages = val;
+        saveState();
+        updateProgressUI();
+        updateRamadanCard();
+      });
+
+      pageInput.addEventListener('blur', (e) => {
+        setCompletedPages(e.target.value);
+      });
+
+      // Complete Khatm button
+      document.getElementById('btn-complete-khatm').addEventListener('click', completeCurrentKhatm);
+
+      // Retroactive Modal controls
+      document.getElementById('btn-open-retro-modal').addEventListener('click', openAddRetroModal);
+      document.getElementById('btn-close-retro-modal').addEventListener('click', closeRetroModal);
+      document.getElementById('btn-cancel-retro').addEventListener('click', closeRetroModal);
+
+      document.getElementById('retro-modal').addEventListener('click', (e) => {
+        if (e.target.id === 'retro-modal') closeRetroModal();
+      });
+
+      document.getElementById('retro-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const editId = document.getElementById('retro-edit-id').value;
+        const dateVal = document.getElementById('retro-date-input').value;
+        if (!dateVal) return;
+
+        if (editId) {
+          const idx = state.khatmHistory.findIndex(item => item.id === editId);
+          if (idx !== -1) {
+            state.khatmHistory[idx].date = dateVal;
+          }
+          showToast('Date updated');
+        } else {
+          const qty = Math.max(1, Math.min(50, parseInt(document.getElementById('retro-qty-input').value, 10) || 1));
+          for (let i = 0; i < qty; i++) {
+            state.khatmHistory.push({
+              id: 'k_' + Date.now() + '_' + i + '_' + Math.random().toString(36).slice(2, 6),
+              date: dateVal
+            });
+          }
+          showToast(qty === 1 ? 'Past Khatm added' : `${qty} past Khatms added`);
+        }
+
+        saveState();
+        renderAll();
+        closeRetroModal();
+      });
+    });
+  </script>
+</body>
+</html>
