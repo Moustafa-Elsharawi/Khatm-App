@@ -111,7 +111,7 @@
               <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
               <polyline points="9 22 9 12 15 12 15 22"/>
             </svg>
-            <span>Home</span>
+            <span id="lbl-btn-home">Home</span>
           </button>
 
           <!-- Settings Page Toggle Button (shown on Home view) -->
@@ -140,9 +140,9 @@
         <div class="flex items-baseline justify-between mb-2">
           <div class="flex items-baseline gap-2">
             <span id="progress-percent" class="text-3xl font-extrabold tracking-tight text-emerald-600 dark:text-emerald-400">0.0%</span>
-            <span class="text-xs font-medium text-zinc-500 dark:text-zinc-400">completed</span>
+            <span id="lbl-completed" class="text-xs font-medium text-zinc-500 dark:text-zinc-400">completed</span>
           </div>
-          <div class="text-xs font-semibold text-zinc-600 dark:text-zinc-300 tabular-nums">
+          <div id="lbl-page-counter" class="text-xs font-semibold text-zinc-600 dark:text-zinc-300 tabular-nums">
             Page <span id="progress-pages-text">0</span> / 604
           </div>
         </div>
@@ -165,10 +165,10 @@
       <!-- 2. Easy Page Logging Card -->
       <section class="bg-white dark:bg-zinc-900/90 border border-zinc-200/80 dark:border-zinc-800 rounded-2xl p-4 shadow-sm space-y-3.5">
         <div class="flex items-center justify-between">
-          <label for="input-current-page" class="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+          <label id="lbl-current-page" for="input-current-page" class="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
             Current Page Completed
           </label>
-          <span class="text-[11px] text-zinc-400 dark:text-zinc-500">Tap number to edit</span>
+          <span id="lbl-tap-to-edit" class="text-[11px] text-zinc-400 dark:text-zinc-500">Tap number to edit</span>
         </div>
 
         <div class="flex items-center gap-2.5">
@@ -202,7 +202,7 @@
             type="button"
             class="h-14 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white font-bold text-base shadow-sm shadow-emerald-600/20 flex items-center justify-center gap-1.5 active:scale-95 transition select-none"
           >
-            <span>+1 Page</span>
+            <span id="lbl-plus-one">+1 Page</span>
           </button>
         </div>
 
@@ -213,7 +213,7 @@
             type="button"
             class="w-full min-h-[48px] rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-bold text-sm shadow-md shadow-emerald-600/25 flex items-center justify-center gap-2 active:scale-[0.99] transition animate-pulse"
           >
-            <span>Complete Khatm &amp; Log Today</span>
+            <span id="lbl-complete-khatm">Complete Khatm &amp; Log Today</span>
             <span aria-hidden="true">🎉</span>
           </button>
         </div>
@@ -229,7 +229,7 @@
         <!-- Tile 1: Days Since Last Khatm -->
         <div class="bg-white dark:bg-zinc-900/90 border border-zinc-200/80 dark:border-zinc-800 rounded-2xl p-3.5 text-center shadow-sm flex flex-col justify-between">
           <span id="stat-days-since" class="text-2xl font-extrabold tabular-nums text-zinc-900 dark:text-zinc-100">—</span>
-          <span class="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 leading-tight mt-1">Days Since Last Khatm</span>
+          <span id="lbl-stat-days-since" class="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 leading-tight mt-1">Days Since Last Khatm</span>
         </div>
 
         <!-- Tile 2: Completed in Current Year -->
@@ -241,7 +241,7 @@
         <!-- Tile 3: Total Khatms -->
         <div class="bg-white dark:bg-zinc-900/90 border border-zinc-200/80 dark:border-zinc-800 rounded-2xl p-3.5 text-center shadow-sm flex flex-col justify-between">
           <span id="stat-total-count" class="text-2xl font-extrabold tabular-nums text-zinc-900 dark:text-zinc-100">0</span>
-          <span class="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 leading-tight mt-1">Total Khatms</span>
+          <span id="lbl-stat-total" class="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 leading-tight mt-1">Total Khatms</span>
         </div>
       </section>
 
@@ -249,15 +249,15 @@
       <section class="bg-white dark:bg-zinc-900/90 border border-zinc-200/80 dark:border-zinc-800 rounded-2xl p-4 shadow-sm space-y-3">
         <div class="flex items-center justify-between">
           <div>
-            <h2 class="text-sm font-bold tracking-tight">Completed Khatm Log</h2>
-            <p class="text-[11px] text-zinc-500 dark:text-zinc-400">Chronological record across all years</p>
+            <h2 id="lbl-history-title" class="text-sm font-bold tracking-tight">Completed Khatm Log</h2>
+            <p id="lbl-history-sub" class="text-[11px] text-zinc-500 dark:text-zinc-400">Chronological record across all years</p>
           </div>
           <button
             id="btn-open-retro-modal"
             type="button"
             class="min-h-[38px] px-3 rounded-xl bg-emerald-600/10 dark:bg-emerald-500/15 hover:bg-emerald-600/20 dark:hover:bg-emerald-500/25 text-emerald-700 dark:text-emerald-300 border border-emerald-600/20 dark:border-emerald-500/25 text-xs font-semibold flex items-center gap-1 active:scale-95 transition"
           >
-            <span>+ Add Past Khatm</span>
+            <span id="lbl-add-past-khatm">+ Add Past Khatm</span>
           </button>
         </div>
 
@@ -277,8 +277,8 @@
       <!-- Appearance (Light / Dark Mode) -->
       <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-4 shadow-sm space-y-3">
         <div>
-          <h2 class="text-sm font-bold">Appearance</h2>
-          <p class="text-[11px] text-zinc-500 dark:text-zinc-400">Choose your preferred reading theme</p>
+          <h2 id="lbl-appearance-title" class="text-sm font-bold">Appearance</h2>
+          <p id="lbl-appearance-sub" class="text-[11px] text-zinc-500 dark:text-zinc-400">Choose your preferred reading theme</p>
         </div>
         <div class="grid grid-cols-2 gap-2.5">
           <button
@@ -290,7 +290,7 @@
               <circle cx="12" cy="12" r="4"/>
               <path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
             </svg>
-            <span>Light Mode</span>
+            <span id="lbl-theme-light">Light Mode</span>
           </button>
 
           <button
@@ -301,7 +301,31 @@
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
             </svg>
-            <span>Dark Mode</span>
+            <span id="lbl-theme-dark">Dark Mode</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Language Selector (English / Arabic) -->
+      <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-4 shadow-sm space-y-3">
+        <div>
+          <h2 id="lbl-language-title" class="text-sm font-bold">Language</h2>
+          <p id="lbl-language-sub" class="text-[11px] text-zinc-500 dark:text-zinc-400">Switch interface language (English / العربية)</p>
+        </div>
+        <div class="grid grid-cols-2 gap-2.5">
+          <button
+            type="button"
+            data-lang-choice="en"
+            class="lang-choice-btn min-h-[46px] rounded-xl text-xs font-bold border border-zinc-200 dark:border-zinc-700 flex items-center justify-center gap-2 transition"
+          >
+            <span>English</span>
+          </button>
+          <button
+            type="button"
+            data-lang-choice="ar"
+            class="lang-choice-btn min-h-[46px] rounded-xl text-xs font-bold border border-zinc-200 dark:border-zinc-700 flex items-center justify-center gap-2 transition"
+          >
+            <span>العربية</span>
           </button>
         </div>
       </div>
@@ -310,8 +334,8 @@
       <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-4 shadow-sm space-y-3">
         <div class="flex items-center justify-between">
           <div>
-            <h2 class="text-sm font-bold">Ramadan &amp; Eid Dates</h2>
-            <p class="text-[11px] text-zinc-500 dark:text-zinc-400">North America local moon-sighting adjustment</p>
+            <h2 id="lbl-offset-title" class="text-sm font-bold">Ramadan &amp; Eid Dates</h2>
+            <p id="lbl-offset-sub" class="text-[11px] text-zinc-500 dark:text-zinc-400">North America local moon-sighting adjustment</p>
           </div>
           <span id="offset-badge" class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">Default (0d)</span>
         </div>
@@ -321,14 +345,14 @@
           <button type="button" data-offset="0" class="offset-btn min-h-[42px] rounded-xl text-xs font-semibold border border-zinc-200 dark:border-zinc-700 transition">0 Days</button>
           <button type="button" data-offset="1" class="offset-btn min-h-[42px] rounded-xl text-xs font-semibold border border-zinc-200 dark:border-zinc-700 transition">+1 Day</button>
         </div>
-        <p class="text-[11px] text-zinc-400">Use this if your local masjid announces Ramadan or Eid one day earlier or later.</p>
+        <p id="lbl-offset-help" class="text-[11px] text-zinc-400">Use this if your local masjid announces Ramadan or Eid one day earlier or later.</p>
       </div>
 
       <!-- Reset Current Khatm Progress -->
       <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-4 shadow-sm space-y-3">
         <div>
-          <h2 class="text-sm font-bold">Reset Current Khatm</h2>
-          <p class="text-[11px] text-zinc-500 dark:text-zinc-400">Set active reading back to Page 0 without deleting past completed Khatms</p>
+          <h2 id="lbl-reset-title" class="text-sm font-bold">Reset Current Khatm</h2>
+          <p id="lbl-reset-sub" class="text-[11px] text-zinc-500 dark:text-zinc-400">Set active reading back to Page 0 without deleting past completed Khatms</p>
         </div>
 
         <button
@@ -341,7 +365,7 @@
 
         <!-- Inline Two-Step Confirmation (No browser confirm() used) -->
         <div id="reset-confirm-box" class="hidden rounded-xl bg-rose-500/10 border border-rose-500/25 p-3 space-y-2.5">
-          <p class="text-xs font-medium text-rose-700 dark:text-rose-300">
+          <p id="lbl-reset-confirm-msg" class="text-xs font-medium text-rose-700 dark:text-rose-300">
             Reset your current progress (<span id="reset-current-pages-label">0</span>/604) back to Page 0? Your completed Khatm log will stay safe.
           </p>
           <div class="grid grid-cols-2 gap-2">
@@ -373,7 +397,7 @@
           <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
           <polyline points="9 22 9 12 15 12 15 22"/>
         </svg>
-        <span>Back to Home</span>
+        <span id="lbl-bottom-home">Back to Home</span>
       </button>
 
     </section>
@@ -394,7 +418,7 @@
         <input type="hidden" id="retro-edit-id" value="" />
 
         <div class="space-y-1.5">
-          <label for="retro-date-input" class="block text-xs font-semibold text-zinc-600 dark:text-zinc-300">
+          <label id="lbl-retro-date" for="retro-date-input" class="block text-xs font-semibold text-zinc-600 dark:text-zinc-300">
             Completion Date (Any Past Year or Date)
           </label>
           <input
@@ -406,7 +430,7 @@
         </div>
 
         <div id="retro-quantity-group" class="space-y-1.5">
-          <label for="retro-qty-input" class="block text-xs font-semibold text-zinc-600 dark:text-zinc-300">
+          <label id="lbl-retro-qty" for="retro-qty-input" class="block text-xs font-semibold text-zinc-600 dark:text-zinc-300">
             Number of Khatms on this Date
           </label>
           <input
@@ -417,7 +441,7 @@
             value="1"
             class="w-full h-12 px-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-sm font-medium text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
           />
-          <p class="text-[11px] text-zinc-400">Useful if you want to quickly log multiple past Khatms from previous years.</p>
+          <p id="lbl-retro-qty-help" class="text-[11px] text-zinc-400">Useful if you want to quickly log multiple past Khatms from previous years.</p>
         </div>
 
         <div class="flex items-center gap-2.5 pt-2">
@@ -430,6 +454,7 @@
           </button>
           <button
             type="submit"
+            id="btn-save-retro"
             class="flex-1 min-h-[44px] rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-sm transition"
           >
             Save Khatm
@@ -512,7 +537,8 @@
       completedPages: 0,
       khatmHistory: [], // Array of { id: string, date: 'YYYY-MM-DD' }
       ramadanOffsetDays: 0, // -1, 0, or +1 day offset for local moon sighting
-      theme: 'dark' // 'dark' | 'light'
+      theme: 'dark', // 'dark' | 'light'
+      language: 'en' // 'en' | 'ar'
     };
 
     function loadState() {
@@ -534,6 +560,9 @@
         if (parsed.theme === 'light' || parsed.theme === 'dark') {
           state.theme = parsed.theme;
         }
+        if (parsed.language === 'en' || parsed.language === 'ar') {
+          state.language = parsed.language;
+        }
       } catch (err) {
         console.error('Failed to load state:', err);
       }
@@ -545,6 +574,136 @@
       } catch (err) {
         console.error('Failed to save state:', err);
       }
+    }
+
+    /**
+     * ============================================================================
+     * 2B. TRANSLATIONS (ENGLISH / ARABIC)
+     * ============================================================================
+     */
+    const TRANSLATIONS = {
+      en: {
+        appTitle: 'Khatam Tracker',
+        settingsTitle: 'Settings',
+        settingsSub: 'Preferences & Reset',
+        activeKhatm: (n) => `Khatm #${n} in progress`,
+        home: 'Home',
+        backToHome: 'Back to Home',
+        completed: 'completed',
+        pageOf: (p, total) => `Page ${p} / ${total}`,
+        juzComplete: 'Juz 30 • Complete!',
+        approxJuz: (j) => `Approx. Juz ${j} of 30`,
+        pagesLeft: (rem) => `${rem} ${rem === 1 ? 'page' : 'pages'} left`,
+        currentPageCompleted: 'Current Page Completed',
+        tapToEdit: 'Tap number to edit',
+        plusOnePage: '+1 Page',
+        completeKhatmToday: 'Complete Khatm & Log Today',
+        daysSinceLastKhatm: 'Days Since Last Khatm',
+        yearKhatms: (y) => `${y} Khatms`,
+        totalKhatms: 'Total Khatms',
+        completedKhatmLog: 'Completed Khatm Log',
+        historySub: 'Chronological record across all years',
+        addPastKhatm: '+ Add Past Khatm',
+        noKhatmsYet: 'No completed Khatms logged yet.',
+        noKhatmsHint: 'Tap "+ Add Past Khatm" to record previous completions.',
+        khatmItemTitle: (n) => `Khatm #${n}`,
+        edit: 'Edit',
+        delete: 'Delete',
+        offsetTitle: 'Ramadan & Eid Dates',
+        offsetSub: 'North America local moon-sighting adjustment',
+        offsetDefault: 'Default (0d)',
+        offsetPlus: (d) => `Adjusted (+${d}d)`,
+        offsetMinus: (d) => `Adjusted (${d}d)`,
+        offsetMinus1Btn: '-1 Day',
+        offsetZeroBtn: '0 Days',
+        offsetPlus1Btn: '+1 Day',
+        offsetHelp: 'Use this if your local masjid announces Ramadan or Eid one day earlier or later.',
+        resetTitle: 'Reset Current Khatm',
+        resetSub: 'Set active reading back to Page 0 without deleting past completed Khatms',
+        resetBtn: 'Reset Current Khatm to Page 0',
+        resetConfirmMsg: (p, total) => `Reset your current progress (${p}/${total}) back to Page 0? Your completed Khatm log will stay safe.`,
+        cancel: 'Cancel',
+        confirmResetBtn: 'Yes, Reset to 0',
+        logPastKhatm: 'Log Past Khatm',
+        editCompletionDate: 'Edit Completion Date',
+        completionDateLabel: 'Completion Date (Any Past Year or Date)',
+        qtyLabel: 'Number of Khatms on this Date',
+        qtyHelp: 'Useful if you want to quickly log multiple past Khatms from previous years.',
+        saveKhatm: 'Save Khatm',
+        toastKhatmLogged: 'MashaAllah! Khatm logged & new Khatm started.',
+        toastEntryRemoved: 'Entry removed',
+        toastOffsetUpdated: 'Calendar offset updated',
+        toastAlreadyZero: 'Already at Page 0',
+        toastResetDone: 'Current Khatm reset to Page 0',
+        toastReached604: 'Reached page 604! Tap Complete Khatm below.',
+        toastDateUpdated: 'Date updated',
+        toastPastAddedOne: 'Past Khatm added',
+        toastPastAddedMany: (q) => `${q} past Khatms added`
+      },
+      ar: {
+        appTitle: 'متتبع الختمة',
+        settingsTitle: 'الإعدادات',
+        settingsSub: 'التفضيلات وإعادة الضبط',
+        activeKhatm: (n) => `الختمة رقم ${n} قيد القراءة`,
+        home: 'الرئيسية',
+        backToHome: 'العودة للرئيسية',
+        completed: 'مكتمل',
+        pageOf: (p, total) => `صفحة ${p} / ${total}`,
+        juzComplete: 'الجزء ٣٠ • مكتملة!',
+        approxJuz: (j) => `تقريباً الجزء ${j} من ٣٠`,
+        pagesLeft: (rem) => `متبقي ${rem} ${rem === 1 ? 'صفحة' : 'صفحات'}`,
+        currentPageCompleted: 'الصفحة المكتملة الحالية',
+        tapToEdit: 'اضغط على الرقم للتعديل',
+        plusOnePage: '+١ صفحة',
+        completeKhatmToday: 'إتمام الختمة وتسجيل اليوم',
+        daysSinceLastKhatm: 'أيام منذ آخر ختمة',
+        yearKhatms: (y) => `ختمات ${y}`,
+        totalKhatms: 'إجمالي الختمات',
+        completedKhatmLog: 'سجل الختمات المكتملة',
+        historySub: 'سجل زمني لجميع السنوات',
+        addPastKhatm: '+ إضافة ختمة سابقة',
+        noKhatmsYet: 'لا توجد ختمات مسجلة بعد.',
+        noKhatmsHint: 'اضغط على "+ إضافة ختمة سابقة" لتسجيل الختمات الماضية.',
+        khatmItemTitle: (n) => `الختمة رقم ${n}`,
+        edit: 'تعديل',
+        delete: 'حذف',
+        offsetTitle: 'مواعيد رمضان والعيد',
+        offsetSub: 'تعديل رؤية الهلال المحلي في أمريكا الشمالية',
+        offsetDefault: 'الافتراضي (٠ يوم)',
+        offsetPlus: (d) => `معدّل (+${d} يوم)`,
+        offsetMinus: (d) => `معدّل (${d} يوم)`,
+        offsetMinus1Btn: '-١ يوم',
+        offsetZeroBtn: '٠ أيام',
+        offsetPlus1Btn: '+١ يوم',
+        offsetHelp: 'استخدم هذا الخيار إذا أعلن المسجد المحلي رمضان أو العيد قبل أو بعد الحساب بيوم.',
+        resetTitle: 'إعادة ضبط الختمة الحالية',
+        resetSub: 'إعادة القراءة الحالية إلى الصفحة ٠ دون حذف سجل الختمات السابقة',
+        resetBtn: 'إعادة ضبط الختمة الحالية إلى الصفحة ٠',
+        resetConfirmMsg: (p, total) => `إعادة تقدمك الحالي (${p}/${total}) إلى الصفحة ٠؟ سيبقى سجل ختماتك محفوظاً.`,
+        cancel: 'إلغاء',
+        confirmResetBtn: 'نعم، أعد إلى ٠',
+        logPastKhatm: 'تسجيل ختمة سابقة',
+        editCompletionDate: 'تعديل تاريخ الإتمام',
+        completionDateLabel: 'تاريخ الإتمام (أي سنة أو تاريخ سابق)',
+        qtyLabel: 'عدد الختمات في هذا التاريخ',
+        qtyHelp: 'مفيد لإضافة عدة ختمات سابقة من سنوات ماضية بسرعة.',
+        saveKhatm: 'حفظ الختمة',
+        toastKhatmLogged: 'ما شاء الله! تم تسجيل الختمة وبدء ختمة جديدة.',
+        toastEntryRemoved: 'تم حذف السجل',
+        toastOffsetUpdated: 'تم تحديث تعديل التقويم',
+        toastAlreadyZero: 'أنت بالفعل عند الصفحة ٠',
+        toastResetDone: 'تمت إعادة ضبط الختمة الحالية إلى الصفحة ٠',
+        toastReached604: 'وصلت إلى الصفحة ٦٠٤! اضغط على إتمام الختمة بالأسفل.',
+        toastDateUpdated: 'تم تحديث التاريخ',
+        toastPastAddedOne: 'تمت إضافة ختمة سابقة',
+        toastPastAddedMany: (q) => `تمت إضافة ${q} ختمات سابقة`
+      }
+    };
+
+    function t(key, ...args) {
+      const dict = TRANSLATIONS[state.language] || TRANSLATIONS.en;
+      const val = dict[key] !== undefined ? dict[key] : TRANSLATIONS.en[key];
+      return typeof val === 'function' ? val(...args) : val;
     }
 
     /**
@@ -583,7 +742,8 @@
 
     function formatDisplayDate(ymd) {
       const d = parseLocalDate(ymd);
-      return d.toLocaleDateString('en-US', {
+      const locale = state.language === 'ar' ? 'ar-SA' : 'en-US';
+      return d.toLocaleDateString(locale, {
         month: 'short',
         day: 'numeric',
         year: 'numeric'
@@ -675,6 +835,8 @@
     function applyTheme() {
       const htmlEl = document.documentElement;
       const metaTheme = document.getElementById('meta-theme-color');
+      htmlEl.setAttribute('lang', state.language === 'ar' ? 'ar' : 'en');
+      htmlEl.setAttribute('dir', 'ltr');
       if (state.theme === 'dark') {
         htmlEl.classList.add('dark');
         if (metaTheme) metaTheme.setAttribute('content', '#09090b');
@@ -692,15 +854,29 @@
       const estimatedJuz = pages === 0 ? 1 : Math.min(30, Math.ceil((pages / TOTAL_PAGES) * 30));
 
       document.getElementById('progress-percent').textContent = `${pct}%`;
-      document.getElementById('progress-pages-text').textContent = pages;
+      document.getElementById('lbl-completed').textContent = t('completed');
+      document.getElementById('lbl-page-counter').innerHTML =
+        `${state.language === 'ar' ? 'صفحة' : 'Page'} <span id="progress-pages-text">${pages}</span> / ${TOTAL_PAGES}`;
       document.getElementById('progress-bar-fill').style.width = `${Math.min(100, (pages / TOTAL_PAGES) * 100)}%`;
-      document.getElementById('juz-estimate').textContent = pages === TOTAL_PAGES ? 'Juz 30 • Complete!' : `Approx. Juz ${estimatedJuz} of 30`;
-      document.getElementById('pages-remaining-text').textContent = `${remaining} ${remaining === 1 ? 'page' : 'pages'} left`;
+      document.getElementById('juz-estimate').textContent = pages === TOTAL_PAGES ? t('juzComplete') : t('approxJuz', estimatedJuz);
+      document.getElementById('pages-remaining-text').textContent = t('pagesLeft', remaining);
+
+      document.getElementById('lbl-current-page').textContent = t('currentPageCompleted');
+      document.getElementById('lbl-tap-to-edit').textContent = t('tapToEdit');
+      document.getElementById('lbl-plus-one').textContent = t('plusOnePage');
+      document.getElementById('lbl-complete-khatm').textContent = t('completeKhatmToday');
 
       const isSettingsOpen = !document.getElementById('settings-view').classList.contains('hidden');
       if (!isSettingsOpen) {
-        document.getElementById('active-khatm-label').textContent = `Khatm #${currentKhatmNum} in progress`;
+        document.getElementById('header-title').textContent = t('appTitle');
+        document.getElementById('active-khatm-label').textContent = t('activeKhatm', currentKhatmNum);
+      } else {
+        document.getElementById('header-title').textContent = t('settingsTitle');
+        document.getElementById('active-khatm-label').textContent = t('settingsSub');
       }
+
+      document.getElementById('lbl-btn-home').textContent = t('home');
+      document.getElementById('lbl-bottom-home').textContent = t('backToHome');
 
       const inputEl = document.getElementById('input-current-page');
       if (document.activeElement !== inputEl) {
@@ -719,6 +895,7 @@
       const card = document.getElementById('ramadan-card');
       const today = getTodayMidnight();
       const status = getRamadanStatus(today);
+      const isAr = state.language === 'ar';
 
       if (status.inRamadan) {
         const remainingPages = Math.max(0, TOTAL_PAGES - state.completedPages);
@@ -732,11 +909,11 @@
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-2">
                 <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
-                  Ramadan Day ${status.ramadanDayNumber}
+                  ${isAr ? `رمضان يوم ${status.ramadanDayNumber}` : `Ramadan Day ${status.ramadanDayNumber}`}
                 </span>
-                <span class="text-xs font-medium text-zinc-500 dark:text-zinc-400">North America</span>
+                <span class="text-xs font-medium text-zinc-500 dark:text-zinc-400">${isAr ? 'أمريكا الشمالية' : 'North America'}</span>
               </div>
-              <span class="text-[11px] text-zinc-400">Eid: ${eidFormatted}</span>
+              <span class="text-[11px] text-zinc-400">${isAr ? `العيد: ${eidFormatted}` : `Eid: ${eidFormatted}`}</span>
             </div>
 
             <div class="grid grid-cols-2 gap-3 pt-0.5">
@@ -745,16 +922,20 @@
                   ${status.daysLeftUntilEid}
                 </div>
                 <div class="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 mt-0.5">
-                  ${status.daysLeftUntilEid === 1 ? 'Day Left Until Eid' : 'Days Left Until Eid'}
+                  ${isAr
+                    ? (status.daysLeftUntilEid === 1 ? 'يوم متبقٍ على العيد' : 'أيام متبقية على العيد')
+                    : (status.daysLeftUntilEid === 1 ? 'Day Left Until Eid' : 'Days Left Until Eid')}
                 </div>
               </div>
 
               <div class="rounded-xl bg-emerald-600/10 dark:bg-emerald-500/10 border border-emerald-600/20 dark:border-emerald-500/20 p-3">
                 <div class="text-2xl font-extrabold tabular-nums text-emerald-700 dark:text-emerald-400">
-                  ${remainingPages === 0 ? '0' : ceilRate} <span class="text-xs font-bold">pg/day</span>
+                  ${remainingPages === 0 ? '0' : ceilRate} <span class="text-xs font-bold">${isAr ? 'صفحة/يوم' : 'pg/day'}</span>
                 </div>
                 <div class="text-[11px] font-medium text-emerald-800/80 dark:text-emerald-300/80 mt-0.5">
-                  ${remainingPages === 0 ? 'Khatm Ready!' : `(${exactRate}/day) to finish by Eid`}
+                  ${remainingPages === 0
+                    ? (isAr ? 'الختمة جاهزة!' : 'Khatm Ready!')
+                    : (isAr ? `(${exactRate}/يوم) لإتمامها قبل العيد` : `(${exactRate}/day) to finish by Eid`)}
                 </div>
               </div>
             </div>
@@ -762,23 +943,49 @@
         `;
       } else {
         const startFormatted = formatDisplayDate(formatYMD(status.ramadanStart));
+        const daysBeforeRamadan = Math.max(1, status.daysUntilRamadan);
+        const remainingPages = Math.max(0, TOTAL_PAGES - state.completedPages);
+        const rawRate = remainingPages / daysBeforeRamadan;
+        const ceilRate = Math.ceil(rawRate);
+        const exactRate = rawRate.toFixed(1);
+
         card.innerHTML = `
-          <div class="flex items-center justify-between gap-3">
-            <div class="space-y-1">
-              <div class="flex items-center gap-1.5">
-                <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Next Ramadan</span>
-                <span class="text-[11px] text-zinc-400">• North America</span>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between gap-3">
+              <div class="space-y-1">
+                <div class="flex items-center gap-1.5">
+                  <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+                    ${isAr ? 'رمضان القادم' : 'Next Ramadan'}
+                  </span>
+                  <span class="text-[11px] text-zinc-400">• ${isAr ? 'أمريكا الشمالية' : 'North America'}</span>
+                </div>
+                <p class="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                  ${isAr ? `يبدأ ${startFormatted}` : `Starts ${startFormatted}`}
+                </p>
               </div>
-              <p class="text-sm font-bold text-zinc-900 dark:text-zinc-100">Starts ${startFormatted}</p>
-              <p class="text-[11px] text-zinc-500 dark:text-zinc-400">Daily Eid pace activates automatically in Ramadan</p>
+
+              <div class="shrink-0 text-right bg-zinc-50 dark:bg-zinc-950/70 border border-zinc-200/80 dark:border-zinc-800 rounded-xl px-3.5 py-2.5">
+                <div class="text-2xl font-extrabold tabular-nums text-emerald-600 dark:text-emerald-400">
+                  ${status.daysUntilRamadan}
+                </div>
+                <div class="text-[10px] font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
+                  ${isAr
+                    ? (status.daysUntilRamadan === 1 ? 'يوم متبقٍ' : 'أيام متبقية')
+                    : (status.daysUntilRamadan === 1 ? 'Day Away' : 'Days Away')}
+                </div>
+              </div>
             </div>
 
-            <div class="shrink-0 text-right bg-zinc-50 dark:bg-zinc-950/70 border border-zinc-200/80 dark:border-zinc-800 rounded-xl px-3.5 py-2.5">
-              <div class="text-2xl font-extrabold tabular-nums text-emerald-600 dark:text-emerald-400">
-                ${status.daysUntilRamadan}
+            <div class="rounded-xl bg-emerald-600/10 dark:bg-emerald-500/10 border border-emerald-600/20 dark:border-emerald-500/20 px-3.5 py-2.5 flex items-center justify-between gap-2">
+              <div class="text-[11px] font-medium text-emerald-900 dark:text-emerald-200">
+                ${remainingPages === 0
+                  ? (isAr ? 'الختمة الحالية مكتملة بالفعل' : 'Current Khatm already completed')
+                  : (isAr
+                    ? `المعدل المطلوب لإتمام الختمة قبل رمضان (${exactRate} صفحة/يوم)`
+                    : `Pace to finish before Ramadan (${exactRate}/day)`)}
               </div>
-              <div class="text-[10px] font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
-                ${status.daysUntilRamadan === 1 ? 'Day Away' : 'Days Away'}
+              <div class="text-sm font-extrabold tabular-nums text-emerald-700 dark:text-emerald-400 shrink-0">
+                ${remainingPages === 0 ? '0' : ceilRate} ${isAr ? 'صفحة/يوم' : 'pg/day'}
               </div>
             </div>
           </div>
@@ -789,6 +996,12 @@
     function updateStatsAndHistoryUI() {
       const today = getTodayMidnight();
       const currentYear = today.getFullYear();
+
+      document.getElementById('lbl-stat-days-since').textContent = t('daysSinceLastKhatm');
+      document.getElementById('lbl-stat-total').textContent = t('totalKhatms');
+      document.getElementById('lbl-history-title').textContent = t('completedKhatmLog');
+      document.getElementById('lbl-history-sub').textContent = t('historySub');
+      document.getElementById('lbl-add-past-khatm').textContent = t('addPastKhatm');
 
       // Sort history chronologically (oldest to newest) to assign Khatm #1, #2, etc.
       const sortedChronological = [...state.khatmHistory].sort((a, b) => a.date.localeCompare(b.date));
@@ -804,7 +1017,7 @@
       // Completed in current calendar year
       const yearCount = numberedHistory.filter(item => Number(item.date.slice(0, 4)) === currentYear).length;
       document.getElementById('stat-year-count').textContent = yearCount;
-      document.getElementById('stat-year-label').textContent = `${currentYear} Khatms`;
+      document.getElementById('stat-year-label').textContent = t('yearKhatms', currentYear);
 
       // Days since last Khatm
       const daysSinceEl = document.getElementById('stat-days-since');
@@ -822,8 +1035,8 @@
       if (numberedHistory.length === 0) {
         listEl.innerHTML = `
           <div class="py-6 text-center space-y-1">
-            <p class="text-xs font-medium text-zinc-500 dark:text-zinc-400">No completed Khatms logged yet.</p>
-            <p class="text-[11px] text-zinc-400 dark:text-zinc-500">Tap "+ Add Past Khatm" to record previous completions.</p>
+            <p class="text-xs font-medium text-zinc-500 dark:text-zinc-400">${t('noKhatmsYet')}</p>
+            <p class="text-[11px] text-zinc-400 dark:text-zinc-500">${t('noKhatmsHint')}</p>
           </div>
         `;
         return;
@@ -837,7 +1050,7 @@
               #${item.number}
             </span>
             <div>
-              <p class="text-xs font-bold text-zinc-900 dark:text-zinc-100">Khatm #${item.number}</p>
+              <p class="text-xs font-bold text-zinc-900 dark:text-zinc-100">${t('khatmItemTitle', item.number)}</p>
               <p class="text-[11px] text-zinc-500 dark:text-zinc-400">${formatDisplayDate(item.date)}</p>
             </div>
           </div>
@@ -846,18 +1059,18 @@
             <button
               type="button"
               onclick="openEditRetroModal('${item.id}')"
-              aria-label="Edit date"
+              aria-label="${t('edit')}"
               class="px-2.5 py-1.5 rounded-lg text-[11px] font-medium text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
             >
-              Edit
+              ${t('edit')}
             </button>
             <button
               type="button"
               onclick="deleteKhatmEntry('${item.id}')"
-              aria-label="Delete entry"
+              aria-label="${t('delete')}"
               class="px-2 py-1.5 rounded-lg text-[11px] font-medium text-rose-500 hover:bg-rose-500/10 transition"
             >
-              Delete
+              ${t('delete')}
             </button>
           </div>
         </div>
@@ -875,9 +1088,42 @@
         }
       });
 
-      // Moon offset buttons
+      // Language buttons
+      document.querySelectorAll('.lang-choice-btn').forEach(btn => {
+        const choice = btn.getAttribute('data-lang-choice');
+        if (choice === state.language) {
+          btn.classList.add('bg-emerald-600', 'text-white', 'border-emerald-600');
+        } else {
+          btn.classList.remove('bg-emerald-600', 'text-white', 'border-emerald-600');
+        }
+      });
+
+      const isAr = state.language === 'ar';
+      const appTitle = document.getElementById('lbl-appearance-title');
+      const appSub = document.getElementById('lbl-appearance-sub');
+      const lightLbl = document.getElementById('lbl-theme-light');
+      const darkLbl = document.getElementById('lbl-theme-dark');
+      const langTitle = document.getElementById('lbl-language-title');
+      const langSub = document.getElementById('lbl-language-sub');
+
+      if (appTitle) appTitle.textContent = isAr ? 'المظهر' : 'Appearance';
+      if (appSub) appSub.textContent = isAr ? 'اختر وضع القراءة المناسب' : 'Choose your preferred reading theme';
+      if (lightLbl) lightLbl.textContent = isAr ? 'الوضع الفاتح' : 'Light Mode';
+      if (darkLbl) darkLbl.textContent = isAr ? 'الوضع الداكن' : 'Dark Mode';
+      if (langTitle) langTitle.textContent = isAr ? 'اللغة' : 'Language';
+      if (langSub) langSub.textContent = isAr ? 'اختر لغة التطبيق (English / العربية)' : 'Switch interface language (English / العربية)';
+
+      document.getElementById('lbl-offset-title').textContent = t('offsetTitle');
+      document.getElementById('lbl-offset-sub').textContent = t('offsetSub');
+      document.getElementById('lbl-offset-help').textContent = t('offsetHelp');
+
+      // Moon offset buttons & labels
       document.querySelectorAll('.offset-btn').forEach(btn => {
         const val = Number(btn.getAttribute('data-offset'));
+        if (val === -1) btn.textContent = t('offsetMinus1Btn');
+        else if (val === 0) btn.textContent = t('offsetZeroBtn');
+        else if (val === 1) btn.textContent = t('offsetPlus1Btn');
+
         if (val === state.ramadanOffsetDays) {
           btn.classList.add('bg-emerald-600', 'text-white', 'border-emerald-600');
         } else {
@@ -887,14 +1133,27 @@
 
       const badge = document.getElementById('offset-badge');
       if (badge) {
-        if (state.ramadanOffsetDays === 0) badge.textContent = 'Default (0d)';
-        else if (state.ramadanOffsetDays > 0) badge.textContent = `Adjusted (+${state.ramadanOffsetDays}d)`;
-        else badge.textContent = `Adjusted (${state.ramadanOffsetDays}d)`;
+        if (state.ramadanOffsetDays === 0) badge.textContent = t('offsetDefault');
+        else if (state.ramadanOffsetDays > 0) badge.textContent = t('offsetPlus', state.ramadanOffsetDays);
+        else badge.textContent = t('offsetMinus', state.ramadanOffsetDays);
       }
 
-      // Reset current progress label & hide confirmation box initially
-      const resetLabel = document.getElementById('reset-current-pages-label');
-      if (resetLabel) resetLabel.textContent = state.completedPages;
+      document.getElementById('lbl-reset-title').textContent = t('resetTitle');
+      document.getElementById('lbl-reset-sub').textContent = t('resetSub');
+      document.getElementById('btn-reset-progress').textContent = t('resetBtn');
+      document.getElementById('lbl-reset-confirm-msg').innerHTML =
+        t('resetConfirmMsg', `<span id="reset-current-pages-label">${state.completedPages}</span>`, TOTAL_PAGES);
+      document.getElementById('btn-cancel-reset').textContent = t('cancel');
+      document.getElementById('btn-confirm-reset').textContent = t('confirmResetBtn');
+
+      // Modal labels
+      document.getElementById('lbl-retro-date').textContent = t('completionDateLabel');
+      document.getElementById('lbl-retro-qty').textContent = t('qtyLabel');
+      document.getElementById('lbl-retro-qty-help').textContent = t('qtyHelp');
+      document.getElementById('btn-cancel-retro').textContent = t('cancel');
+      document.getElementById('btn-save-retro').textContent = t('saveKhatm');
+
+      // Hide confirmation box initially on settings render
       const confirmBox = document.getElementById('reset-confirm-box');
       if (confirmBox) confirmBox.classList.add('hidden');
     }
@@ -904,7 +1163,7 @@
       document.getElementById('settings-view').classList.add('hidden');
       document.getElementById('btn-open-settings').classList.remove('hidden');
       document.getElementById('btn-go-home').classList.add('hidden');
-      document.getElementById('header-title').textContent = 'Khatam Tracker';
+      document.getElementById('header-title').textContent = t('appTitle');
       updateProgressUI();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -914,8 +1173,8 @@
       document.getElementById('settings-view').classList.remove('hidden');
       document.getElementById('btn-open-settings').classList.add('hidden');
       document.getElementById('btn-go-home').classList.remove('hidden');
-      document.getElementById('header-title').textContent = 'Settings';
-      document.getElementById('active-khatm-label').textContent = 'Preferences & Reset';
+      document.getElementById('header-title').textContent = t('settingsTitle');
+      document.getElementById('active-khatm-label').textContent = t('settingsSub');
       updateSettingsUI();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -950,11 +1209,11 @@
       state.completedPages = 0;
       saveState();
       renderAll();
-      showToast('MashaAllah! Khatm logged & new Khatm started.');
+      showToast(t('toastKhatmLogged'));
     }
 
     function openAddRetroModal() {
-      document.getElementById('retro-modal-title').textContent = 'Log Past Khatm';
+      document.getElementById('retro-modal-title').textContent = t('logPastKhatm');
       document.getElementById('retro-edit-id').value = '';
       document.getElementById('retro-date-input').value = formatYMD(getTodayMidnight());
       document.getElementById('retro-qty-input').value = '1';
@@ -969,7 +1228,7 @@
       const entry = state.khatmHistory.find(item => item.id === id);
       if (!entry) return;
 
-      document.getElementById('retro-modal-title').textContent = 'Edit Completion Date';
+      document.getElementById('retro-modal-title').textContent = t('editCompletionDate');
       document.getElementById('retro-edit-id').value = entry.id;
       document.getElementById('retro-date-input').value = entry.date;
       document.getElementById('retro-quantity-group').classList.add('hidden');
@@ -983,7 +1242,7 @@
       state.khatmHistory = state.khatmHistory.filter(item => item.id !== id);
       saveState();
       renderAll();
-      showToast('Entry removed');
+      showToast(t('toastEntryRemoved'));
     };
 
     function closeRetroModal() {
@@ -1011,6 +1270,16 @@
         });
       });
 
+      // Language choice buttons inside Settings
+      document.querySelectorAll('.lang-choice-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.language = btn.getAttribute('data-lang-choice') === 'ar' ? 'ar' : 'en';
+          saveState();
+          renderAll();
+          showToast(state.language === 'ar' ? 'تم تغيير اللغة إلى العربية' : 'Language set to English');
+        });
+      });
+
       // Moon-sighting offset buttons
       document.querySelectorAll('.offset-btn').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -1018,14 +1287,14 @@
           saveState();
           updateSettingsUI();
           updateRamadanCard();
-          showToast('Calendar offset updated');
+          showToast(t('toastOffsetUpdated'));
         });
       });
 
       // Reset current Khatm progress (two-step inline confirmation)
       document.getElementById('btn-reset-progress').addEventListener('click', () => {
         if (state.completedPages === 0) {
-          showToast('Already at Page 0');
+          showToast(t('toastAlreadyZero'));
           return;
         }
         document.getElementById('reset-current-pages-label').textContent = state.completedPages;
@@ -1042,7 +1311,7 @@
         updateSettingsUI();
         updateProgressUI();
         updateRamadanCard();
-        showToast('Current Khatm reset to Page 0');
+        showToast(t('toastResetDone'));
       });
 
       // +1 Page & -1 Page buttons
@@ -1050,7 +1319,7 @@
         if (state.completedPages < TOTAL_PAGES) {
           setCompletedPages(state.completedPages + 1);
         } else {
-          showToast('Reached page 604! Tap Complete Khatm below.');
+          showToast(t('toastReached604'));
         }
       });
 
@@ -1099,7 +1368,7 @@
           if (idx !== -1) {
             state.khatmHistory[idx].date = dateVal;
           }
-          showToast('Date updated');
+          showToast(t('toastDateUpdated'));
         } else {
           const qty = Math.max(1, Math.min(50, parseInt(document.getElementById('retro-qty-input').value, 10) || 1));
           for (let i = 0; i < qty; i++) {
@@ -1108,7 +1377,7 @@
               date: dateVal
             });
           }
-          showToast(qty === 1 ? 'Past Khatm added' : `${qty} past Khatms added`);
+          showToast(qty === 1 ? t('toastPastAddedOne') : t('toastPastAddedMany', qty));
         }
 
         saveState();
